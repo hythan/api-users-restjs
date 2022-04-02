@@ -20,31 +20,32 @@ export class UsersService {
     where?: Prisma.UserWhereInput;
     orderBy?: Prisma.UserOrderByWithRelationInput;
   }): Promise<User[]> {
+    if (params.skip) {
+      params.skip = Number(params.skip);
+    }
     return this.prisma.user.findMany(params);
   }
 
-  find(userWhereUniqueInput: Prisma.UserWhereUniqueInput): Promise<User> {
-    if (userWhereUniqueInput.id) {
-      userWhereUniqueInput.id = Number(userWhereUniqueInput.id);
+  find(id: number): Promise<User | null> {
+    try {
+      return this.prisma.user.findUnique({
+        where: { id: Number(id) },
+      });
+    } catch (error) {
+      return error;
     }
-    return this.prisma.user.findUnique({
-      where: userWhereUniqueInput,
-    });
   }
 
-  update(params: {
-    where: Prisma.UserWhereUniqueInput;
-    data: Prisma.UserUpdateInput;
-  }) {
+  update(params: { where: string; data: Prisma.UserUpdateInput }) {
     return this.prisma.user.update({
-      where: params.where,
+      where: { id: Number(params.where) },
       data: params.data,
     });
   }
 
-  remove(where: Prisma.UserWhereUniqueInput) {
+  remove(where: number) {
     return this.prisma.user.delete({
-      where,
+      where: { id: Number(where) },
     });
   }
 }
