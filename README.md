@@ -29,7 +29,8 @@
 ## Installation
 
 ```bash
-$ npm install
+$ docker-compose up
+$ docker-compose exec app npx prisma migrate dev --migration_name init
 ```
 
 ## Running the app
