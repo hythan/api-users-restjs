@@ -6,9 +6,7 @@ import {
   Patch,
   Param,
   Delete,
-  Req,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { UsersService } from './users.service';
 
 @Controller('users')
