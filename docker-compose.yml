@@ -3,6 +3,7 @@ services:
   db:
     image: postgres
     restart: always
+    container_name: pg_api_users
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
