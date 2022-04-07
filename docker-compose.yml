@@ -32,6 +32,7 @@ services:
     command: "npm run start:dev"
 networks:
   default: 
+    driver: bridge
 volumes:
   pg_data:
     driver: local
