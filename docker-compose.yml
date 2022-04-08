@@ -2,7 +2,6 @@ version: '3.9'
 services:
   db:
     image: postgres
-    restart: always
     container_name: pg_api_users
     environment:
       POSTGRES_USER: postgres
@@ -11,8 +10,8 @@ services:
       POSTGRES_HOST_AUTH_METHOD: trust
     ports: 
       - "5432:5432"
-    volumes: 
-      - pg_data:/var/lib/postgresql
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
     networks:
       - default
 
@@ -22,7 +21,6 @@ services:
     container_name: api-users-nestjs
     depends_on: 
       - db
-    restart: always
     ports:
       - "3000:3000"
     volumes:
@@ -34,5 +32,5 @@ networks:
   default: 
     driver: bridge
 volumes:
-  pg_data:
+  postgresdata:
     driver: local

@@ -20,25 +20,25 @@ export class UsersController {
     return this.usersService.create(data);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Get()
   findAll(@Body() request: any) {
     return this.usersService.all(request);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   findOne(@Param('id') id: number) {
     return this.usersService.find(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   update(@Param('id') id: string, @Body() user: any) {
     return this.usersService.update({ where: id, data: user });
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   remove(@Param('id') id: number) {
     return this.usersService.remove(id);
