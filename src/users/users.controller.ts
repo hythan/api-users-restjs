@@ -16,8 +16,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  create(@Body() data: any) {
-    return this.usersService.create(data);
+  async create(@Body() data: any) {
+    return await this.usersService.create(data);
   }
 
   // @UseGuards(AuthGuard('jwt'))

@@ -8,6 +8,7 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { JwtStrategy } from './jwt.strategy';
+import { BcryptService } from 'src/helpers/bcrypt.service';
 
 @Module({
   controllers: [AuthController],
@@ -19,6 +20,6 @@ import { JwtStrategy } from './jwt.strategy';
       signOptions: { expiresIn: '120s' },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy],
+  providers: [AuthService, BcryptService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

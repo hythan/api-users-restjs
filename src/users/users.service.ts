@@ -1,15 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { User, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
+import { BcryptService } from 'src/helpers/bcrypt.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private bcrypt: BcryptService) {}
 
-  create(data: Prisma.UserCreateInput): Promise<User> {
-    return this.prisma.user.create({
-      data,
-    });
+  async create(data: Prisma.UserCreateInput): Promise<User | any> {
+    data.password = this.bcrypt.encodePassword(data.password);
+    try {
+      const response = await this.prisma.user.create({ data });
+      return response;
+    } catch (e) {
+      if (e.code === 'P2002') {
+        return { error: `This ${e.meta.target} already been registred.` };
+      }
+      return e;
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
