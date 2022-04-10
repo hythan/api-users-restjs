@@ -2,10 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { User, Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { BcryptService } from 'src/helpers/bcrypt.service';
+import { ErrorsService } from 'src/helpers/errors.service';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService, private bcrypt: BcryptService) {}
+  constructor(
+    private prisma: PrismaService,
+    private bcrypt: BcryptService,
+    private errorsService: ErrorsService,
+  ) {}
 
   async create(data: Prisma.UserCreateInput): Promise<User | any> {
     data.password = this.bcrypt.encodePassword(data.password);
@@ -13,10 +18,7 @@ export class UsersService {
       const response = await this.prisma.user.create({ data });
       return response;
     } catch (e) {
-      if (e.code === 'P2002') {
-        return { error: `This ${e.meta.target} already been registred.` };
-      }
-      return e;
+      return this.errorsService.getErrorMessage(e);
     }
   }
 
