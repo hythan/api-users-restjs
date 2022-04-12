@@ -52,11 +52,17 @@ export class UsersService {
     });
   }
 
-  update(params: { where: string; data: Prisma.UserUpdateInput }) {
-    return this.prisma.user.update({
-      where: { id: Number(params.where) },
-      data: params.data,
-    });
+  async update(params: { where: string; data: Prisma.UserUpdateInput }) {
+    params.data.password = this.bcrypt.encodePassword(params.data.password);
+    try {
+      const response = await this.prisma.user.update({
+        where: { id: Number(params.where) },
+        data: params.data,
+      });
+      return response;
+    } catch (error) {
+      return this.errorsService.getErrorMessage(error);
+    }
   }
 
   remove(where: number) {
