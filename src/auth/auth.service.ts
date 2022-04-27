@@ -9,7 +9,7 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService,
     private bcrypt: BcryptService,
-  ) { }
+  ) {}
 
   async validateUser(userEmail: string, userPassword: string) {
     const user = await this.usersService.findByEmail(userEmail);
@@ -24,12 +24,6 @@ export class AuthService {
     const payload = { email: user.email, sub: user.id };
     return {
       token: this.jwtService.sign(payload),
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
     };
   }
 }

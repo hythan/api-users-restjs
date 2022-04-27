@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -24,6 +25,17 @@ export class UsersController {
   @Get()
   findAll(@Body() request: any) {
     return this.usersService.all(request);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get('/user')
+  async user(@Request() req: any) {
+    return {
+      user: {
+        id: req.user.userId,
+        email: req.user.email,
+      },
+    };
   }
 
   @UseGuards(AuthGuard('jwt'))
