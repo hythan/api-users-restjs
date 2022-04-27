@@ -53,7 +53,10 @@ export class UsersService {
   }
 
   async update(params: { where: string; data: Prisma.UserUpdateInput }) {
-    params.data.password = this.bcrypt.encodePassword(params.data.password);
+    if (params.data.password) {
+      params.data.password = this.bcrypt.encodePassword(params.data.password);
+    }
+
     try {
       const response = await this.prisma.user.update({
         where: { id: Number(params.where) },
