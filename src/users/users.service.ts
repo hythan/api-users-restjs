@@ -13,8 +13,14 @@ export class UsersService {
   ) {}
 
   async create(data: Prisma.UserCreateInput): Promise<User | any> {
-    data.password = this.bcrypt.encodePassword(data.password);
     try {
+      if (!data.email || !data.password || !data.name) {
+        return this.errorsService.getErrorMessage({
+          error: 'Check the data sent. Some value are empty.',
+        });
+      }
+
+      data.password = this.bcrypt.encodePassword(data.password);
       const response = await this.prisma.user.create({ data });
       return response;
     } catch (e) {
